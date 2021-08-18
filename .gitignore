@@ -1,0 +1,5 @@
+*.code-workspace
+*.csv
+*.png
+/data
+/oekologische_iteration
