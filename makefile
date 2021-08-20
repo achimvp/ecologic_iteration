@@ -19,6 +19,8 @@ run: $(BINARY)
 
 plot: run
 	python plot_iterations.py
+	python plot_bifurcation_diagram.py
+	python plot_lyapunov_exponent.py
 
 clean:
 	@rm -rf *.o
