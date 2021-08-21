@@ -11,9 +11,16 @@ double ecologic_map(double x, double y, double r);
 double lyapunov_exponent_simple(double x0, double x1, int n, double r);
 /* function for calculation of the lyapunov exponent via first derivative */
 double lyapunov_exponent_advanced(double x0, int n, double r);
+/* simulate the map for fixed set of parameters */
 void exercise1();
-void bifurcation_diagram();
+/* bifurcation diagram as function of r for two step iteration*/
+void exercise2();
+/* bifurcation diagram for single step iteration */
 void exercise3();
+/* compute lyapunov exponent for single step iteration */
+void exercise4();
+
+
 
 /* main function */
 int main(void)
@@ -123,7 +130,7 @@ double lyapunov_exponent_advanced(double x0, int n, double r)
 
 }
 
-void exercise3()
+void exercise4()
 {
     double r = 0.0;
     int rs = 10000;
