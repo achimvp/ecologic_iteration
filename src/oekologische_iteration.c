@@ -3,12 +3,14 @@
 #include <tgmath.h>
 
 /* declaration of functions */
+/* fuction to take the derivative */
+double diff_eco(double x, double delta, double r);
 /* function for calculating the ecologic map */
 double ecologic_map(double x, double y, double r);
 /* function for calculation the lyapunov exponent via simple method */
 double lyapunov_exponent_simple(double x0, double x1, int n, double r);
 /* function for calculation of the lyapunov exponent via first derivative */
-double lyapunov_exponent_advanced();
+double lyapunov_exponent_advanced(double x0, int n, double r);
 void exercise1();
 void bifurcation_diagram();
 void exercise3();
@@ -28,6 +30,15 @@ double ecologic_map(double x, double y, double r)
 {
 	return r * x * exp(1 - x * y);
 }
+
+double diff_eco(double x, double delta, double r)
+{   double x_left = x - delta;
+    double x_right = x + delta;
+	double f_left = ecologic_map(x_left, x_left, r);
+	double f_right = ecologic_map(x_right, x_right, r);
+	return (f_right - f_left) / (2 * delta);
+}
+
 void exercise1()
 {
 	double x0 = 1.0; // starting value for x
@@ -98,6 +109,20 @@ double lyapunov_exponent_simple(double x0, double x1, int n, double r)
     return log(fabs(delta_x / (x0 - x1))) / n;
 }
 
+double lyapunov_exponent_advanced(double x0, int n, double r)
+{
+
+    double tmp_sum =0.0;
+    for (int i = 0; i < n; i++ )
+    {
+        tmp_sum += log(fabs(diff_eco(x0, 0.01, r)));
+        x0 = ecologic_map(x0, x0, r);
+
+    }
+    return tmp_sum / n;
+
+}
+
 void exercise3()
 {
     double r = 0.0;
@@ -108,15 +133,23 @@ void exercise3()
     double step = 5. / rs;
 
     FILE *fp = fopen("lyapunov_exponent_simple.csv", "w");
+    FILE *fp2 = fopen("lyapunov_exponent_advances.csv", "w");
+    
 
     /* write file header */
     fprintf(fp, "r,lypunov_exponent");
+    fprintf(fp2, "r,lypunov_exponent");
     
     for (int i = 0; i < rs; i++)
     {
         double le = lyapunov_exponent_simple(x0, x1, n, r);
         fprintf(fp, "\n%g,%g", r, le);
+
+        double le2 = lyapunov_exponent_advanced(x0, n, r);
+        fprintf(fp2, "\n%g,%g", r, le2);
         r += step;
     }
     fclose(fp);
+    fclose(fp2);
+    
 }
