@@ -151,7 +151,7 @@ double lyapunov_exponent_simple(double x0, double x1, int n, double r)
         x0 = ecologic_map(x0, x0, r);
         x1 = ecologic_map(x1, x1, r);
     }
-    return log(fabs(delta_x / (x0 - x1))) / n;
+    return log(fabs((x0 - x1)/delta_x)) / n;
 }
 
 double lyapunov_exponent_advanced(double x0, int n, double r)
@@ -172,9 +172,9 @@ void exercise4()
 {
     double r = 0.0;
     int rs = 10000;
-    int n = 1000;
+    int n = 50;
     double x0 = 0.5;
-    double x1 = x0 + 1e-4;
+    double x1 = x0 + 1e-6;
     double step = 5. / rs;
 
     FILE *fp = fopen("lyapunov_exponent_simple.csv", "w");
