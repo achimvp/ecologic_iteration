@@ -17,11 +17,13 @@ $(BINARY): $(OBJECTS)
 run: $(BINARY)
 	./$(BINARY)
 
-plot: run
+plot: clean run
 	python plot_iterations.py
 	python plot_bifurcation_diagram.py
 	python plot_lyapunov_exponent.py
+	
 
 clean:
 	@rm -rf *.o
 	@rm -f $(BINARY)
+	@rm -f *.csv

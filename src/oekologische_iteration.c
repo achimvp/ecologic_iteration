@@ -9,16 +9,22 @@ double ecologic_map(double x, double y, double r);
 double lyapunov_exponent_simple(double x0, double x1, int n, double r);
 /* function for calculation of the lyapunov exponent via first derivative */
 double lyapunov_exponent_advanced();
+/* simulate the map for fixed set of parameters */
 void exercise1();
-void bifurcation_diagram();
+/* bifurcation diagram as function of r for two step iteration*/
+void exercise2();
+/* bifurcation diagram for single step iteration */
 void exercise3();
+/* compute lyapunov exponent for single step iteration */
+void exercise4();
 
 /* main function */
 int main(void)
 {
 	exercise1();
-    bifurcation_diagram();
+    exercise2();
     exercise3();
+    exercise4();
 	return EXIT_SUCCESS;
 }
 
@@ -30,31 +36,36 @@ double ecologic_map(double x, double y, double r)
 }
 void exercise1()
 {
-	double x0 = 1.0; // starting value for x
-	double x1 = 1.0; // starting value for y
-	double r = 0.5;  // value for bifurcation parameter
+	double x0[] = {.5, .5, .5, .5}; // starting value for x
+	double x1[] = {.5, .5, .5, .5}; // starting value for y
+	double rs[] = {0.1, 0.5, 0.9, 2.};  // value for bifurcation parameter
 	int N = 200;    // number of iteration steps
 
 	FILE* iterations = fopen("iteration_values.csv", "w");
 
 	/* write file header and initial values */
-	fprintf(iterations, "n,x\n0,%g", x1);
+	fprintf(iterations, "n,%g,%g,%g,%g\n", rs[0], rs[1], rs[2], rs[3]);
+	fprintf(iterations, "0,%g,%g,%g,%g", x1[0], x1[1], x1[2], x1[3]);
 	/* iteration loop */
-	for (int i = 0; i < N; i++)
+	for (int i = 1; i <= N; i++)
 	{
-		double tmp = ecologic_map(x0, x1, r);
-		x0 = x1;
-		x1 = tmp;
-		fprintf(iterations, "\n%d,%g", i, x1);
+        fprintf(iterations, "\n%d", i);
+        for (int i = 0; i < 4; i++)
+        {
+            double tmp = ecologic_map(x0[i], x1[i], rs[i]);
+            x0[i] = x1[i];
+            x1[i] = tmp;
+            fprintf(iterations, ",%g", x1[i]);
+        }
 	};
 	fclose(iterations);
 }
 
-void bifurcation_diagram()
+void exercise2()
 {   
-    int rs = 100000;  // number of rs to simulate dynamics for
+    int rs = 10000;  // number of rs to simulate dynamics for
     double r[rs];  // array for the values of r
-    double step = 10. / rs;  // step size for equal spacing of r
+    double step = 3. / rs;  // step size for equal spacing of r
 
     /* fill the r array with equally spaced values between 0 and 100*/
     for (int i = 0; i < rs; i++)
@@ -63,7 +74,7 @@ void bifurcation_diagram()
     };
     
 
-    FILE* fp = fopen("ecologic_map_fine.csv", "w");
+    FILE* fp = fopen("ecologic_map_twostep.csv", "w");
 
     /* simulate the dynamics for every r */
     for (int j = 0; j < rs; j++)
@@ -87,6 +98,40 @@ void bifurcation_diagram()
 
 }
 
+void exercise3()
+{   
+    int rs = 10000;  // number of rs to simulate dynamics for
+    double r[rs];  // array for the values of r
+    double step = 3. / rs;  // step size for equal spacing of r
+
+    /* fill the r array with equally spaced values between 0 and 100*/
+    for (int i = 0; i < rs; i++)
+    {
+        r[i] = i * step;
+    };
+    
+
+    FILE* fp = fopen("ecologic_map_onestep.csv", "w");
+
+    /* simulate the dynamics for every r */
+    for (int j = 0; j < rs; j++)
+    {   
+        double x0 = 0.5;
+        fprintf(fp, "%g", r[j]);
+        for (int i = 0; i < 1000; i++)
+        {
+            x0 = ecologic_map(x0, x0, r[j]);
+            if (i >= 950)
+            {
+                fprintf(fp, ",%g", x0);
+            }
+            
+        }
+        fprintf(fp, "\n");
+    };
+
+}
+
 double lyapunov_exponent_simple(double x0, double x1, int n, double r)
 {
     double delta_x = x0 - x1;
@@ -98,13 +143,13 @@ double lyapunov_exponent_simple(double x0, double x1, int n, double r)
     return log(fabs(delta_x / (x0 - x1))) / n;
 }
 
-void exercise3()
+void exercise4()
 {
     double r = 0.0;
     int rs = 10000;
-    int n = 100;
+    int n = 1000;
     double x0 = 0.5;
-    double x1 = x0 + 1e-6;
+    double x1 = x0 + 1e-4;
     double step = 5. / rs;
 
     FILE *fp = fopen("lyapunov_exponent_simple.csv", "w");
