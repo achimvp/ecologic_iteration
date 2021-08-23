@@ -1,7 +1,7 @@
 BINARY = OEKOLOGISCHE_ITERATION
 CC = gcc
 CFLAGS = -Wall -Wpedantic -Ofast -flto
-LFLAGS = -llapacke -lblas -lm -lgsl
+LFLAGS = -lm
 OBJECTS = oekologische_iteration.o
 HEADER = 
 VPATH = src/
