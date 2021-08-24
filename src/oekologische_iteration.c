@@ -11,6 +11,9 @@ double ecologic_map(double x, double y, double r);
 double lyapunov_exponent_simple(double x0, double x1, int n, double r);
 /* function for calculation of the lyapunov exponent via first derivative */
 double lyapunov_exponent_advanced(double x0, int n, double r);
+/* function to calculate the derivative of the ecologic_mao */
+double eco_analytic_diff(double x, double r);
+double eco_numeric_diff(double x, double delta, double r);
 /* simulate the map for fixed set of parameters */
 void exercise1();
 /* bifurcation diagram as function of r for two step iteration*/
@@ -20,6 +23,8 @@ void exercise3();
 /* compute lyapunov exponent for single step iteration */
 void exercise4();
 
+void exercise5();
+
 /* main function */
 int main(void)
 {
@@ -27,6 +32,7 @@ int main(void)
     exercise2();
     exercise3();
     exercise4();
+    exercise5();
 	return EXIT_SUCCESS;
 }
 
@@ -37,7 +43,7 @@ double ecologic_map(double x, double y, double r)
 	return r * x * exp(1 - x * y);
 }
 
-double diff_eco(double x, double delta, double r)
+double eco_numeric_diff(double x, double delta, double r)
 {   double x_left = x - delta;
     double x_right = x + delta;
 	double f_left = ecologic_map(x_left, x_left, r);
@@ -45,11 +51,15 @@ double diff_eco(double x, double delta, double r)
 	return (f_right - f_left) / (2 * delta);
 }
 
+double eco_analytic_diff(double x, double r)
+{   return r*(-1. * exp(1.-x*x))*(2.*x*x-1.);
+}
+
 void exercise1()
 {
 	double x0[] = {.5, .5, .5, .5}; // starting value for x
 	double x1[] = {.5, .5, .5, .5}; // starting value for y
-	double rs[] = {0.1, 0.5, 0.9, 2.};  // value for bifurcation parameter
+	double rs[] = {0.367, 0.369, 1.5, 1.6};  // value for bifurcation parameter
 	int N = 200;    // number of iteration steps
 
 	FILE* iterations = fopen("iteration_values.csv", "w");
@@ -160,7 +170,7 @@ double lyapunov_exponent_advanced(double x0, int n, double r)
     double tmp_sum =0.0;
     for (int i = 0; i < n; i++ )
     {
-        tmp_sum += log(fabs(diff_eco(x0, 0.01, r)));
+        tmp_sum += log(fabs(eco_analytic_diff(x0, r)));
         x0 = ecologic_map(x0, x0, r);
 
     }
@@ -172,29 +182,74 @@ void exercise4()
 {
     double r = 0.0;
     int rs = 10000;
-    int n = 50;
+    //int n = 1000;
+    int ns[] = {10,20,50,1000};
     double x0 = 0.5;
-    double x1 = x0 + 1e-6;
+    double x1 = x0 + 1e-3;
     double step = 5. / rs;
 
+    double le_simple = 0;
+    double le_advanced = 0;
+
     FILE *fp = fopen("lyapunov_exponent_simple.csv", "w");
-    FILE *fp2 = fopen("lyapunov_exponent_advances.csv", "w");
+    FILE *fp2 = fopen("lyapunov_exponent_advanced.csv", "w");
     
 
     /* write file header */
-    fprintf(fp, "r,lypunov_exponent");
-    fprintf(fp2, "r,lypunov_exponent");
+    fprintf(fp, "r,%d,%d,%d,%d", ns[0],ns[1],ns[2],ns[3]);
+    fprintf(fp2,"r,%d,%d,%d,%d", ns[0],ns[1],ns[2],ns[3]);
     
     for (int i = 0; i < rs; i++)
-    {
-        double le = lyapunov_exponent_simple(x0, x1, n, r);
-        fprintf(fp, "\n%g,%g", r, le);
+    {   
+        fprintf(fp,"\n%g",r);
+        for(int i = 0; i<4; i++){
+            le_simple = lyapunov_exponent_simple(x0, x1, ns[i], r);
+            fprintf(fp, ",%g", le_simple);
 
-        double le2 = lyapunov_exponent_advanced(x0, n, r);
-        fprintf(fp2, "\n%g,%g", r, le2);
+        }
+
+        fprintf(fp2,"\n%g",r);
+        for(int i = 0; i<4; i++){
+            le_advanced = lyapunov_exponent_advanced(x0, ns[i], r);
+            fprintf(fp2, ",%g", le_advanced);
+
+        }
+        
+
+        //double le2 = lyapunov_exponent_advanced(x0, n, r);
+        //fprintf(fp2, "\n%g,%g", r, le2);
         r += step;
     }
     fclose(fp);
     fclose(fp2);
     
+}
+
+void exercise5()
+    FILE* fp = fopen("differences.csv", "w");
+    int n = 100;
+    double x_start = 0.5;
+    double delta = 0.01;
+    double x_i0[] = {x_start, x_start, x_start}; // starting value for x
+	double x_i1[] = {x_start + delta, x_start+delta, x_start +delta}; // starting value for y
+	double rs_i[] = {0.5, 1.2, 1.5};  // value for bifurcation parameter
+
+    fprintf(fp,"%g,%g,%g,%g,%g", x_start, delta,  rs_i[0],  rs_i[1], rs_i[2]);
+
+    //fprintf(fp,"n, %g,%g,%g", rs_i[0], rs_i[1], rs_i[2]);
+    for(int i = 0; i < n; i++){
+        fprintf(fp, "\n%d", i);
+        for (int i = 0; i < 3; i++)
+        {
+            x_i0[i] = ecologic_map(x_i0[i], x_i0[i], rs_i[i]);
+            x_i1[i] = ecologic_map(x_i1[i], x_i1[i], rs_i[i]);
+
+            fprintf(fp,",%g,%g,%g", x_i0[i], x_i1[i], x_i0[i] - x_i1[i]);
+        }
+
+
+    }
+
+
+
 }
