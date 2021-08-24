@@ -226,6 +226,7 @@ void exercise4()
 }
 
 void exercise5()
+{
     FILE* fp = fopen("differences.csv", "w");
     int n = 100;
     double x_start = 0.5;

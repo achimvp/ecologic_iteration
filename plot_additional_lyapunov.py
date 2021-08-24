@@ -15,7 +15,7 @@ axs[1].set_xlim(xmax = 3, xmin = 0)
 axs[0].set_title("Two step iteration")
 axs[1].set_title("One step iteration")
 plt.tight_layout()
-plt.savefig("ecologic_map_bifurcation diagrams")
+plt.savefig("lyapunov_and_bifurkation")
 plt.show()
 
 data = np.loadtxt("differences.csv", skiprows=1, delimiter=",")
