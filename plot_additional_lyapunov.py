@@ -27,7 +27,7 @@ index = data[:,0]
 header = np.loadtxt("data/differences.csv", delimiter=",", max_rows=1)
 rs = header[2:]
 fig, axes = plt.subplots(ncols=2,nrows=3, sharex=True, figsize=(10,7))
-fig.suptitle(r"Entwicklung der Trajektorien and Differenzen $\Delta x_n$ für $x_0=$" + f"{header[0]} und "+r"$\delta =$"+f"{header[1]}", fontsize=15)
+fig.suptitle(r"Entwicklung der Trajektorien und Differenzen $\Delta x_n$ für $x_0=$" + f"{header[0]} und "+r"$\delta =$"+f"{header[1]}", fontsize=15)
 for i in range(0,3):
     axes.flat[2*i].plot(index, data[:,3*i+1], linewidth=1,linestyle = "solid")
     axes.flat[2*i].plot(index, data[:,3*i+2], linewidth=1,linestyle = "dashed")

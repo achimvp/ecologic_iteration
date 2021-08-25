@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 data = np.loadtxt("data/iteration_values.csv", delimiter=",", skiprows=1)
 
 # read the values for the bifurcation parameter r
-with open('iteration_values.csv') as f:
+with open('data/iteration_values.csv') as f:
     rs = f.readline().strip().split(",")[1:]
 
 plt.figure(figsize=(15,10))
