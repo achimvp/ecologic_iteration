@@ -2,6 +2,7 @@
 *.csv
 *.png
 /data
+/img
 /oekologische_iteration
 *.o
 /OEKOLOGISCHE_ITERATION

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # load the data part of the iteration values
-data = np.loadtxt("iteration_values.csv", delimiter=",", skiprows=1)
+data = np.loadtxt("data/iteration_values.csv", delimiter=",", skiprows=1)
 
 # read the values for the bifurcation parameter r
 with open('iteration_values.csv') as f:
@@ -15,5 +15,5 @@ plt.legend()
 plt.xlabel("time step n")
 plt.ylabel(r"$x_n$")
 plt.title("Evolution of the ecologic map vs # of iterations")
-plt.savefig("ecologic_map_trajectories")
+plt.savefig("img/ecologic_map_trajectories")
 plt.show()
