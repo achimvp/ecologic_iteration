@@ -2,8 +2,8 @@ BINARY = OEKOLOGISCHE_ITERATION
 CC = gcc
 CFLAGS = -Wall -Wpedantic -Ofast -flto
 LFLAGS = -lm
-OBJECTS = oekologische_iteration.o
-HEADER = 
+OBJECTS = oekologische_iteration.o functions.o
+HEADER = functions.h
 VPATH = src/
 
 all: $(BINARY)
