@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-le_adv = np.loadtxt("lyapunov_exponent_advanced.csv", delimiter=",",skiprows=1, unpack=True)
+le_adv = np.loadtxt("data/lyapunov_exponent_advanced.csv", delimiter=",",skiprows=1, unpack=True)
 r_adv = le_adv[0,:]
 
-data_os = np.loadtxt("ecologic_map_onestep.csv", delimiter=",")
+data_os = np.loadtxt("data/ecologic_map_onestep.csv", delimiter=",")
 fig, axs = plt.subplots(2,1, figsize=(12,7),sharex=True)
 axs[0].plot(r_adv, le_adv[4,:], label="Lyapunov Exponent", linewidth=1)
 for i in range(1,50):
@@ -19,15 +19,15 @@ axs[0].set_title("Lyapunov Exponent")
 axs[1].set_title("Bifurkationsdiagram")
 fig.suptitle(r"Lyapunov Exponent und Bifurkationsdiagram für $x_0=0.5$", fontsize=15)
 plt.tight_layout()
-plt.savefig("lyapunov_and_bifurkation")
+plt.savefig("img/lyapunov_and_bifurkation")
 plt.show()
 
-data = np.loadtxt("differences.csv", skiprows=1, delimiter=",")
+data = np.loadtxt("data/differences.csv", skiprows=1, delimiter=",")
 index = data[:,0]
-header = np.loadtxt("differences.csv", delimiter=",", max_rows=1)
+header = np.loadtxt("data/differences.csv", delimiter=",", max_rows=1)
 rs = header[2:]
 fig, axes = plt.subplots(ncols=2,nrows=3, sharex=True, figsize=(10,7))
-fig.suptitle(r"Entwicklung der Trajektorien and Differenzen $\Delta x_n$ für $x_0=$" + f"{header[0]} und "+r"$\delta =$"+f"{header[1]}", fontsize=15)
+fig.suptitle(r"Entwicklung der Trajektorien und Differenzen $\Delta x_n$ für $x_0=$" + f"{header[0]} und "+r"$\delta =$"+f"{header[1]}", fontsize=15)
 for i in range(0,3):
     axes.flat[2*i].plot(index, data[:,3*i+1], linewidth=1,linestyle = "solid")
     axes.flat[2*i].plot(index, data[:,3*i+2], linewidth=1,linestyle = "dashed")
@@ -46,5 +46,5 @@ for i in range(0,3):
     if i == 2:
         axes.flat[2*i].set_xlabel(r"Zeitschritt $n$")
         axes.flat[2*i+1].set_xlabel(r"Zeitschritt $n$")
-plt.savefig("error_tracking")
+plt.savefig("img/error_tracking")
 plt.show()

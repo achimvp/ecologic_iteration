@@ -62,7 +62,7 @@ void exercise1()
 	double rs[] = {0.367, 0.369, 1.5, 1.6};  // value for bifurcation parameter
 	int N = 200;    // number of iteration steps
 
-	FILE* iterations = fopen("iteration_values.csv", "w");
+	FILE* iterations = fopen("data/iteration_values.csv", "w");
 
 	/* write file header and initial values */
 	fprintf(iterations, "n,%g,%g,%g,%g\n", rs[0], rs[1], rs[2], rs[3]);
@@ -95,7 +95,7 @@ void exercise2()
     };
     
 
-    FILE* fp = fopen("ecologic_map_twostep.csv", "w");
+    FILE* fp = fopen("data/ecologic_map_twostep.csv", "w");
 
     /* simulate the dynamics for every r */
     for (int j = 0; j < rs; j++)
@@ -132,7 +132,7 @@ void exercise3()
     };
     
 
-    FILE* fp = fopen("ecologic_map_onestep.csv", "w");
+    FILE* fp = fopen("data/ecologic_map_onestep.csv", "w");
 
     /* simulate the dynamics for every r */
     for (int j = 0; j < rs; j++)
@@ -191,8 +191,8 @@ void exercise4()
     double le_simple = 0;
     double le_advanced = 0;
 
-    FILE *fp = fopen("lyapunov_exponent_simple.csv", "w");
-    FILE *fp2 = fopen("lyapunov_exponent_advanced.csv", "w");
+    FILE *fp = fopen("data/lyapunov_exponent_simple.csv", "w");
+    FILE *fp2 = fopen("data/lyapunov_exponent_advanced.csv", "w");
     
 
     /* write file header */
@@ -227,7 +227,7 @@ void exercise4()
 
 void exercise5()
 {
-    FILE* fp = fopen("differences.csv", "w");
+    FILE* fp = fopen("data/differences.csv", "w");
     int n = 100;
     double x_start = 0.5;
     double delta = 0.01;

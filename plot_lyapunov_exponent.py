@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-le_simp = np.loadtxt("lyapunov_exponent_simple.csv", delimiter=",",skiprows=1, unpack=True)
+le_simp = np.loadtxt("data/lyapunov_exponent_simple.csv", delimiter=",",skiprows=1, unpack=True)
 r_simp = le_simp[0,:]
 
-le_adv = np.loadtxt("lyapunov_exponent_advanced.csv", delimiter=",",skiprows=1, unpack=True)
+le_adv = np.loadtxt("data/lyapunov_exponent_advanced.csv", delimiter=",",skiprows=1, unpack=True)
 r_adv = le_adv[0,:]
 
-header = np.loadtxt("lyapunov_exponent_advanced.csv", delimiter=",",max_rows=1, usecols = range(1,5))
+header = np.loadtxt("data/lyapunov_exponent_advanced.csv", delimiter=",",max_rows=1, usecols = range(1,5))
 
 
 
@@ -29,5 +29,5 @@ plt.suptitle(r"Vergleich der Lyapunov Exponenten $\lambda$ mit $x_0 = 0.5$ und $
 #plt.grid()
 #plt.legend()
 plt.tight_layout()
-plt.savefig("lyapunov_exponents")
+plt.savefig("img/lyapunov_exponents")
 plt.show()

@@ -7,7 +7,7 @@ HEADER =
 VPATH = src/
 
 all: $(BINARY)
-
+	@mkdir -p data img
 $(BINARY): $(OBJECTS) 
 	$(CC) $(OBJECTS) $(CLAGS) $(LFLAGS) -o $(BINARY)
 
@@ -15,6 +15,7 @@ $(BINARY): $(OBJECTS)
 	$(CC) $(CFLAGS) $< -c -o $@
 
 run: $(BINARY)
+	@mkdir -p data img
 	./$(BINARY)
 
 plot: clean run
@@ -25,7 +26,7 @@ plot: clean run
 	
 
 clean:
+	@rm -f -r data img
 	@rm -rf *.o
 	@rm -f $(BINARY)
-	@rm -f *.csv
-	@rm -f *.png
+
