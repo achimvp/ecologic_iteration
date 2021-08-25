@@ -1,11 +1,16 @@
-from matplotlib import colors
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = np.loadtxt("iteration_values.csv", skiprows=1, delimiter=",")
+# load the data part of the iteration values
+data = np.loadtxt("iteration_values.csv", delimiter=",", skiprows=1)
+
+# read the values for the bifurcation parameter r
+with open('iteration_values.csv') as f:
+    rs = f.readline().strip().split(",")[1:]
 
 plt.figure(figsize=(15,10))
-plt.plot(data[:, 0], data[:, 1:], linewidth=1, label=[r"$r=0.1$",r"$r=0.5$",r"$r=0.9$",r"$r=1.5$"])  # skip the first 100 values as burn in phase
+for i in range(1, data.shape[1]):
+	plt.plot(data[:, 0], data[:, i], linewidth=1, label=f"r={rs[i-1]}")  # skip the first 100 values as burn in phase
 plt.legend()
 plt.xlabel("time step n")
 plt.ylabel(r"$x_n$")
