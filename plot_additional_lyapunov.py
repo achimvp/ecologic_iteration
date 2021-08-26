@@ -52,11 +52,11 @@ fig.suptitle(r"Entwicklung der Trajektorien und Differenzen $\Delta x_n$ für $x
 for i in range(0,3):
     # Plotting the data
     axes.flat[2*i].plot(index, data[:,3*i+1], linewidth=1,linestyle = "solid")
-    axes.flat[2*i].plot(index, data[:,3*i+2], linewidth=1,linestyle = (0,(.5,.5)))
+    axes.flat[2*i].plot(index, data[:,3*i+2], linewidth=1,linestyle = "dashed")
     axes.flat[2*i+1].plot(index, data[:,3*i+3], linewidth=1)
 
     # Styling of the ploz
-    axes.flat[2*i].legend([r"$x_n$", r"$x_n+\delta$"],loc='lower right')
+    axes.flat[2*i].legend([r"$x_0$", r"$x_0+\delta$"],loc='lower right')
     axes.flat[2*i+1].legend([r"$\Delta x_n$"],loc='lower right')
     axes.flat[2*i].set_title(r"Trajektorien für $r=$"+ f"{rs[i]}")
     axes.flat[2*i+1].set_title(r"$\Delta x_n$ für $r=$"+ f"{rs[i]}")
