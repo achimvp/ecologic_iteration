@@ -166,6 +166,6 @@ void exercise4()
             fprintf(fp3,",%g,%g,%g", x_i0[i], x_i1[i], x_i0[i] - x_i1[i]);
         }
     }
-    
+    fclose(fp3);
 }
 
