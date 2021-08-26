@@ -23,7 +23,7 @@ void exercise1()
     double r[rs];  // array for the values of r
     double step = 3. / rs;  // step size for equal spacing of r
 
-    /* fill the r array with equally spaced values between 0 and 100*/
+    /* fill the r array with equally spaced values between 0 and 3*/
     for (int i = 0; i < rs; i++)
     {
         r[i] = i * step;
@@ -43,6 +43,8 @@ void exercise1()
             double tmp = ecologic_map(x0, x1, r[j]);
             x0 = x1;
             x1 = tmp;
+            /* get the last 50 x_n because otherwise only 
+            one branch would be visible in thebifurkation diagram*/
             if (i >= 950)
             {
                 fprintf(fp, ",%g", x1);
@@ -61,7 +63,7 @@ void exercise3()
     double r[rs];  // array for the values of r
     double step = 3. / rs;  // step size for equal spacing of r
 
-    /* fill the r array with equally spaced values between 0 and 100*/
+    /* fill the r array with equally spaced values between 0 and 3*/
     for (int i = 0; i < rs; i++)
     {
         r[i] = i * step;
@@ -78,6 +80,8 @@ void exercise3()
         for (int i = 0; i < 1000; i++)
         {
             x0 = ecologic_map(x0, x0, r[j]);
+            /* get the last 50 x_n because otherwise only 
+            one branch would be visible in thebifurkation diagram*/
             if (i >= 950)
             {
                 fprintf(fp, ",%g", x0);
