@@ -1,10 +1,7 @@
 #include "functions.h"
 
-
-/* simulate the map for fixed set of parameters */
-void exercise1();
 /* bifurcation diagram as function of r for two step iteration*/
-void exercise2();
+void exercise1();
 /* bifurcation diagram for single step iteration */
 void exercise3();
 /* compute lyapunov exponent for single step iteration */
@@ -14,41 +11,14 @@ void exercise4();
 int main(void)
 {
 	exercise1();
-    exercise2();
     exercise3();
     exercise4();
 	return EXIT_SUCCESS;
 }
 
 void exercise1()
-{
-	double x0[] = {.5, .5, .5, .5}; // starting value for x
-	double x1[] = {.5, .5, .5, .5}; // starting value for y
-	double rs[] = {0.367, 0.369, 1.5, 1.6};  // value for bifurcation parameter
-	int N = 200;    // number of iteration steps
+{   /*generation of the data for the bifurcation diagram for the two step rekursion*/
 
-	FILE* iterations = fopen("data/iteration_values.csv", "w");
-
-	/* write file header and initial values */
-	fprintf(iterations, "n,%g,%g,%g,%g\n", rs[0], rs[1], rs[2], rs[3]);
-	fprintf(iterations, "0,%g,%g,%g,%g", x1[0], x1[1], x1[2], x1[3]);
-	/* iteration loop */
-	for (int i = 1; i <= N; i++)
-	{
-        fprintf(iterations, "\n%d", i);
-        for (int i = 0; i < 4; i++)
-        {
-            double tmp = ecologic_map(x0[i], x1[i], rs[i]);
-            x0[i] = x1[i];
-            x1[i] = tmp;
-            fprintf(iterations, ",%g", x1[i]);
-        }
-	};
-	fclose(iterations);
-}
-
-void exercise2()
-{   
     int rs = 10000;  // number of rs to simulate dynamics for
     double r[rs];  // array for the values of r
     double step = 3. / rs;  // step size for equal spacing of r
@@ -85,7 +55,8 @@ void exercise2()
 }
 
 void exercise3()
-{   
+{   /*generation of the data for the bifurcation diagram for the onestep rekursion*/
+
     int rs = 10000;  // number of rs to simulate dynamics for
     double r[rs];  // array for the values of r
     double step = 3. / rs;  // step size for equal spacing of r
@@ -120,17 +91,20 @@ void exercise3()
 
 
 void exercise4()
-{
-    double r = 0.0;
-    int rs = 10000;
-    //int n = 1000;
-    int ns[] = {10,20,50,1000};
-    double x0 = 0.5;
-    double x1 = x0 + 1e-3;
-    double step = 5. / rs;
+{   /*
+    Calculation of the Lyapunov Exponent (LE) as a function
+    of the bifurcation parameter with the simple and with
+    the advanced method. 
+    */
+    int rs = 10000; // number of rs to simulate dynamics for
+    double r = 0.0; // starting value for r
+    int ns[] = {10,20,50,1000}; // ns for which the LE should be calculated
+    double x0 = 0.5; //staring value for x
+    double x1 = x0 + 1e-3; //the other close by starting value
+    double step = 5. / rs; //step size for equal spacing of r
 
-    double le_simple = 0;
-    double le_advanced = 0;
+    double le_simple = 0; //Lyapunov Exponent with simple method
+    double le_advanced = 0; // LE with advanced method
 
     FILE *fp = fopen("data/lyapunov_exponent_simple.csv", "w");
     FILE *fp2 = fopen("data/lyapunov_exponent_advanced.csv", "w");
@@ -140,15 +114,17 @@ void exercise4()
     fprintf(fp, "r,%d,%d,%d,%d", ns[0],ns[1],ns[2],ns[3]);
     fprintf(fp2,"r,%d,%d,%d,%d", ns[0],ns[1],ns[2],ns[3]);
     
+    // estimation of LE for every r and different n
     for (int i = 0; i < rs; i++)
     {   
+        //simple
         fprintf(fp,"\n%g",r);
         for(int i = 0; i<4; i++){
             le_simple = lyapunov_exponent_simple(x0, x1, ns[i], r);
             fprintf(fp, ",%g", le_simple);
 
         }
-
+        //advanced
         fprintf(fp2,"\n%g",r);
         for(int i = 0; i<4; i++){
             le_advanced = lyapunov_exponent_advanced(x0, ns[i], r);
@@ -161,18 +137,26 @@ void exercise4()
     fclose(fp);
     fclose(fp2);
 
+    /* 
+    Tracking the differences between the trajektories for closeby starting values
+    for some bifurkation parameters 
+    this data is later used to better understand the differences between the 
+    simple and advanced method for the calculation of the LE
+     */
     FILE* fp3 = fopen("data/differences.csv", "w");
     int n = 100;
-    double x_start = 0.5;
-    double delta = 0.01;
+    double x_start = 0.5;//starting value
+    double delta = 0.01;//difference between the starting values
     double x_i0[] = {x_start, x_start, x_start}; // starting value for x
 	double x_i1[] = {x_start + delta, x_start+delta, x_start +delta}; // starting value for y
 	double rs_i[] = {0.5, 1.2, 1.5};  // value for bifurcation parameter
 
+    //writing meta information to file
     fprintf(fp,"%g,%g,%g,%g,%g", x_start, delta,  rs_i[0],  rs_i[1], rs_i[2]);
 
-
-    for(int i = 0; i < n; i++){
+    //tracking trajectories and their difference over time
+    for(int i = 0; i < n; i++)
+    {
         fprintf(fp3, "\n%d", i);
         for (int i = 0; i < 3; i++)
         {
@@ -181,8 +165,6 @@ void exercise4()
 
             fprintf(fp3,",%g,%g,%g", x_i0[i], x_i1[i], x_i0[i] - x_i1[i]);
         }
-
-
     }
     
 }
