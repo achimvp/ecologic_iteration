@@ -19,7 +19,7 @@ for i in range(4):
     ax=axes.flat[i]
     # plotting
     ax.plot(r_simp, le_simp[i+1], label="simple", linewidth=1)
-    ax.plot(r_adv, le_adv[i+1], label="advanced", linestyle="dashed", linewidth=1,alpha=0.8)
+    ax.plot(r_adv, le_adv[i+1], label="advanced", linestyle=(0,(.5,.5)), linewidth=1,alpha=1)
     # Styling the plot
     ax.legend()
     ax.grid()

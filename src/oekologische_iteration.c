@@ -156,7 +156,7 @@ void exercise4()
 	double rs_i[] = {0.5, 1.2, 1.5};  // value for bifurcation parameter
 
     //writing meta information to file
-    fprintf(fp,"%g,%g,%g,%g,%g", x_start, delta,  rs_i[0],  rs_i[1], rs_i[2]);
+    fprintf(fp3,"%g,%g,%g,%g,%g", x_start, delta,  rs_i[0],  rs_i[1], rs_i[2]);
 
     //tracking trajectories and their difference over time
     for(int i = 0; i < n; i++)
