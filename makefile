@@ -19,7 +19,6 @@ run: $(BINARY)
 	./$(BINARY)
 
 plot: clean run
-	python plot_iterations.py
 	python plot_bifurcation_diagram.py
 	python plot_lyapunov_exponent.py
 	python plot_additional_lyapunov.py
